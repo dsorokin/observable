@@ -18,7 +18,7 @@
 
 (defsystem :observable
   :version "0.1"
-  :description "An implementation of events and observable objects from F# for Common Lisp."
+  :description "Events and observable objects from F# for Common Lisp."
   :licence "MIT"
   :components ((:file "observable")
                (:static-file "README")))

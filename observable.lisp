@@ -1,4 +1,4 @@
-;;;; OBSERVABLE -- an implementation of events and observable objects from F# for Common Lisp
+;;;; OBSERVABLE -- events and observable objects from F# for Common Lisp 
 ;;;; by David Sorokin <david.sorokin@gmail.com>, 2011
 ;;;;
 ;;;; Licence:
