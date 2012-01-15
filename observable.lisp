@@ -51,9 +51,9 @@
 
 (defun event-push (function event)
   "Add the function of one argument to handle the event messages."
-  (event-push-handler (lambda (sender msg) 
+  (event-push-handler (lambda (sender &rest args) 
                         (declare (ignore sender))
-                        (funcall function msg))
+                        (apply function args))
 		      event))
 
 (defun event-push-handler (handler event)
@@ -69,11 +69,11 @@ two arguments: a sender and message."
     (setf (event-source-handlers source)
 	  (delete handler (event-source-handlers source)))))
 
-(defun trigger-event (event-source sender msg)
+(defun trigger-event (event-source sender &rest args)
   "Trigger the event associated with the specified source and 
 pass in the sender and message to every handler."
   (loop for handler in (event-source-handlers event-source)
-       do (funcall handler sender msg)))
+        do (apply handler sender args)))
 
 (defun publish-event (event-source)
   "Publish and return an event associated with the specified source."
@@ -124,9 +124,9 @@ return a disposable one. The function must be of one argument."))
 (defun event->observable (event)
   "Convert the event to an observable object."
   (flet ((subscribe (function)
-	   (let ((handler (lambda (sender msg)
+	   (let ((handler (lambda (sender &rest args)
 			    (declare (ignore sender))
-			    (funcall function msg))))
+			    (apply function args))))
              (event-push-handler handler event)
              (flet ((dispose () 
                       (event-delete-handler handler event)))
@@ -134,12 +134,12 @@ return a disposable one. The function must be of one argument."))
     (make-instance 'standard-observable :subscribe #'subscribe)))
 
 (defun observable-map (function observable)
-  "Apply the function of one argument to all messages. It returns
+  "Apply the function to the arguments. It returns
 a disposable object."
   (flet ((subscribe (function2)
            (observable-subscribe 
-            (lambda (msg) 
-              (funcall function2 (funcall function msg)))
+            (lambda (&rest args) 
+              (funcall function2 (apply function args)))
 	    observable)))
     (make-instance 'standard-observable :subscribe #'subscribe)))
 
@@ -147,9 +147,9 @@ a disposable object."
   "Filter the messages. It returns a disposable object."
   (flet ((subscribe (function)
            (observable-subscribe
-            (lambda (msg)
-              (when (funcall predicate msg)
-                (funcall function msg)))
+            (lambda (&rest args)
+              (when (apply predicate args)
+                (apply function args)))
 	    observable)))
     (make-instance 'standard-observable :subscribe #'subscribe)))
 
