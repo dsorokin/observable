@@ -1,4 +1,4 @@
-;;;;  Copyright (c) 2011 David Sorokin <david.sorokin@gmail.com>
+;;;;  Copyright (c) 2011-2013 David Sorokin <david.sorokin@gmail.com>
 ;;;;
 ;;;;  Permission is hereby granted, free of charge, to any person
 ;;;;  obtaining a copy of this software and associated documentation files
@@ -21,5 +21,6 @@
   :description "Events and observable objects from F# for Common Lisp."
   :licence "MIT"
   :components ((:file "observable")
+               (:file "observable-macros")
                (:static-file "README")))
 

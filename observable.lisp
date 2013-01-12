@@ -1,5 +1,5 @@
 ;;;; OBSERVABLE -- events and observable objects from F# for Common Lisp 
-;;;; by David Sorokin <david.sorokin@gmail.com>, 2011
+;;;; by David Sorokin <david.sorokin@gmail.com>, 2011-2013
 ;;;;
 ;;;; Licence:
 ;;;;
@@ -37,7 +37,9 @@
    #:event->observable
    #:observable-map
    #:observable-remove-if-not
-   #:observable-merge))
+   #:observable-merge
+   #:deftrigger
+   #:defevent))
 
 (in-package :observable)
 
