@@ -39,7 +39,8 @@
    #:observable-remove-if-not
    #:observable-merge
    #:deftrigger
-   #:defevent))
+   #:defevent
+   #:defaccessor))
 
 (in-package :observable)
 
