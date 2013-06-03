@@ -25,15 +25,17 @@
   "Define the event trigger. Example:
 (deftrigger trigger-node-rect-changed :after ((node rect-node))
   (:slot 'rect-changed)
-  (:documentation ...))  ; optional
+  (:documentation ...)
+  (:form ...))  ; optional
 "
   `(progn
      (defgeneric ,name (,sender ,@args)
        ,@(let ((doc (assoc :documentation specs)))
            (if doc (list doc))))
      (defmethod ,name ((,sender ,type) ,@args)
-       ,@(if args `((declare (ignore ,@args))))
-       (values))
+       ,@(if args `((declare (ignorable ,@args))))
+       ,@(let ((form (assoc :form specs)))
+           (cdr form)))
      (defmethod ,name ,qualifier ((,sender ,type) ,@args)
        (trigger-event 
         (slot-value ,sender 
@@ -98,4 +100,5 @@
              (setf (slot-value ,name ,slot) ,v)
              ,@(if midform (list `(funcall ,midform ,v0 ,v))))
            ,@(if changed-trigger (list `(,changed-trigger ,name)))
-           ,@(if postform (list postform))))))))
+           ,@(if postform (list postform)))
+         (slot-value ,name ,slot))))))
